@@ -1,0 +1,40 @@
+{
+  "name": "qcobjects-handler-contactform",
+  "description": "QCObjects Handler for ContactForm Backend Services",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "sync": "git add . && git commit -am ",
+    "test": "(npx eslint *.js api/**/*.js --fix) && (npx jasmine)",
+    "preversion": "npm cache verify && npm test",
+    "postversion": "git push && git push --tags",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QCObjects/qcobjects-handler-contactform.git"
+  },
+  "keywords": [
+    "qcobjects",
+    "newapp",
+    "qcobjects-handler",
+    "js",
+    "javascript"
+  ],
+  "author": "Jean Machuca (correojean@gmail.com)",
+  "license": "LGPL-3.0-or-later",
+  "devDependencies": {
+    "eslint": ">=7.0.0",
+    "eslint-config-qcobjects": "0.0.11",
+    "qcobjects": "latest",
+    "qcobjects-cli": "latest",
+    "qcobjects-sdk": "latest"
+  },
+  "peerDependencies": {
+    "qcobjects": ">=2.3.0",
+    "qcobjects-sdk": ">=2.3.0",
+    "qcobjects-cli": ">=2.3.47",
+    "qcobjects-lib-mailchimp-api": ">=0.0.12",
+    "qcobjects-lib-sendemail":">=0.0.9"
+  }
+}
