@@ -30,7 +30,9 @@
 /*eslint no-undef: "off"*/
 /*eslint no-useless-escape: "off"*/
 "use strict";
-const path = require("path");
-const absolutePath = path.resolve( __dirname, "./" );
-Import (absolutePath + "/api/com.qcobjects.backend.microservice.contactform");
-Package ("qcobjects-handler-contactform", Package ("com.qcobjects.backend.microservice.contactform"));
+(function (){
+    const path = require("path");
+    const absolutePath = path.resolve( __dirname, "./" );
+    Import (absolutePath + "/api/com.qcobjects.backend.microservice.contactform");
+    Package ("qcobjects-handler-contactform", Package ("com.qcobjects.backend.microservice.contactform"));
+})();
