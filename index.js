@@ -33,6 +33,7 @@
 (function (){
     const path = require("path");
     const absolutePath = path.resolve( __dirname, "./" );
+    Import (absolutePath + "/api/backendroutes");
     Import (absolutePath + "/api/com.qcobjects.backend.microservice.contactform");
     Package ("qcobjects-handler-contactform", Package ("com.qcobjects.backend.microservice.contactform"));
 })();
