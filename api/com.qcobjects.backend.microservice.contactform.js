@@ -21,7 +21,7 @@
  *
  * Everyone is permitted to copy and distribute verbatim copies of this
  * license document, but changing it is not allowed.
-*/
+ */
 /*eslint no-unused-vars: "off"*/
 /*eslint no-redeclare: "off"*/
 /*eslint no-empty: "off"*/
@@ -30,18 +30,35 @@
 /*eslint no-undef: "off"*/
 "use strict";
 
-Package("com.qcobjects.backend.microservice.contactform",[
-  Class("ContactFormMicroservice",BackendMicroservice,{
-    body:null,
+Package("com.qcobjects.backend.microservice.contactform", [
+  Class("ContactFormMicroservice", BackendMicroservice, {
+    body: null,
     tempFileName: "",
-    registerClient (formData) {
+    error(code, e) {
+      let microservice = this;
+      let stream = microservice.stream;
+      if (typeof stream.respond !== "undefined") {
+        stream.respond({
+          ":status": code,
+          "content-type": "text/html"
+        });
+      } else if (stream.writeHeader !== "undefined") {
+        stream.writeHeader(code, {
+          "content-type": "text/html"
+        });
+      }
+      stream.on("error", () => {});
+      stream.write(`<h1>${code.toString()} - ${e}</h1>`);
+      stream.end();
+    },
+    registerClient(formData) {
       try {
         logger.debugEnabled = true;
         var microservice = this;
-        let emailNotification = New (EmailNotification, {
+        let emailNotification = New(EmailNotification, {
           microservice: microservice
         });
-        let mailchimpApi = New (MailchimpAPI, {
+        let mailchimpApi = New(MailchimpAPI, {
           microservice: microservice
         });
 
@@ -49,40 +66,34 @@ Package("com.qcobjects.backend.microservice.contactform",[
           mailchimpApi.subscribeToAll(formData),
           emailNotification.sendEmailUser(formData),
           emailNotification.sendEmailBackoffice(formData)
-        ]).then ((response)=> {
-          logger.debug (_DataStringify(response));
-          microservice.body = response;
+        ]).then((response) => {
+          logger.debug(_DataStringify(response));
+          microservice.body = {
+            message: "Thank you for your message, we will contact you as soon as possible.",
+            status: "OK"
+          };
           microservice.done();
         }).catch(e => {
           logger.debug(e.toString());
-          microservice.body = {
-            status: e.toString()
-          };
-          microservice.done();
+          microservice.error(500, e);
         });
-      } catch (e){
+      } catch (e) {
         logger.debug(e.toString());
-        microservice.body = {
-          status: e.toString()
-        };
-        microservice.done();
+        microservice.error(500, e);
       }
 
     },
-    get (formData){
-      console.log("call to get method...");
+    get(formData) {
+      logger.info("[ContactFormMicroservice] A call to get method is not allowed...");
       let microservice = this;
-      microservice.body = {
-        status: "Method not allowed"
-      };
-      microservice.done();
-//      microservice.registerClient();
+      logger.debug(e.toString());
+      microservice.error(405, "Method not allowed");
     },
-    post (formData){
-      console.log("executing post register send email...");
+    post(formData) {
+      logger.info("[ContactFormMicroservice] executing post to send email notification...");
       let microservice = this;
       microservice.registerClient(formData);
     }
   }),
-  Class("Microservice",ContactFormMicroservice)
+  Class("Microservice", ContactFormMicroservice)
 ]);
