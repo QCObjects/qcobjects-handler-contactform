@@ -86,8 +86,9 @@ Package("com.qcobjects.backend.microservice.contactform", [
     get(formData) {
       logger.info("[ContactFormMicroservice] A call to get method is not allowed...");
       let microservice = this;
+      let e = "Method not allowed";
       logger.debug(e.toString());
-      microservice.error(405, "Method not allowed");
+      microservice.error(405, e.toString());
     },
     post(formData) {
       logger.info("[ContactFormMicroservice] executing post to send email notification...");
