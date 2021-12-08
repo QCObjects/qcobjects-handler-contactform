@@ -75,11 +75,11 @@ Package("com.qcobjects.backend.microservice.contactform", [
           microservice.done();
         }).catch(e => {
           logger.debug(e.toString());
-          microservice.error(500, e);
+          microservice.error(500, e.toString());
         });
       } catch (e) {
         logger.debug(e.toString());
-        microservice.error(500, e);
+        microservice.error(500, e.toString());
       }
 
     },
