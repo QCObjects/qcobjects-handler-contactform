@@ -63,20 +63,26 @@ Package("com.qcobjects.backend.microservice.contactform", [
             microservice: microservice
           });
   
-          Promise.all([
-            mailchimpApi.subscribeToAll(formData),
-            emailNotification.sendEmailUser(formData),
-            emailNotification.sendEmailBackoffice(formData)
-          ]).then((response) => {
+          mailchimpApi.subscribeToAll(formData).then((response) => {
             logger.debug(_DataStringify(response));
-            resolve({
-              message: "Thank you for your message, we will contact you as soon as possible.",
-              status: "OK"
+          }).catch((e) => {
+            logger.debug(e);
+          }).finally(() => {
+            Promise.all([
+              emailNotification.sendEmailUser(formData),
+              emailNotification.sendEmailBackoffice(formData)
+            ]).then((response) => {
+              logger.debug(_DataStringify(response));
+              resolve({
+                message: "Thank you for your message, we will contact you as soon as possible.",
+                status: "OK"
+              });
+            }).catch(e => {
+              logger.debug(e.toString());
+              reject(e.toString());
             });
-          }).catch(e => {
-            logger.debug(e.toString());
-            reject(e.toString());
           });
+
         } catch (e) {
           logger.debug(e.toString());
           reject(e.toString());
