@@ -52,35 +52,37 @@ Package("com.qcobjects.backend.microservice.contactform", [
       stream.end();
     },
     registerClient(formData) {
-      try {
-        logger.debugEnabled = true;
-        var microservice = this;
-        let emailNotification = New(EmailNotification, {
-          microservice: microservice
-        });
-        let mailchimpApi = New(MailchimpAPI, {
-          microservice: microservice
-        });
-
-        Promise.all([
-          mailchimpApi.subscribeToAll(formData),
-          emailNotification.sendEmailUser(formData),
-          emailNotification.sendEmailBackoffice(formData)
-        ]).then((response) => {
-          logger.debug(_DataStringify(response));
-          microservice.body = {
-            message: "Thank you for your message, we will contact you as soon as possible.",
-            status: "OK"
-          };
-          microservice.done();
-        }).catch(e => {
+      var microservice = this;
+      return new Promise((resolve, reject) => { 
+        try {
+          logger.debugEnabled = true;
+          let emailNotification = New(EmailNotification, {
+            microservice: microservice
+          });
+          let mailchimpApi = New(MailchimpAPI, {
+            microservice: microservice
+          });
+  
+          Promise.all([
+            mailchimpApi.subscribeToAll(formData),
+            emailNotification.sendEmailUser(formData),
+            emailNotification.sendEmailBackoffice(formData)
+          ]).then((response) => {
+            logger.debug(_DataStringify(response));
+            resolve({
+              message: "Thank you for your message, we will contact you as soon as possible.",
+              status: "OK"
+            });
+          }).catch(e => {
+            logger.debug(e.toString());
+            reject(e.toString());
+          });
+        } catch (e) {
           logger.debug(e.toString());
-          microservice.error(500, e.toString());
-        });
-      } catch (e) {
-        logger.debug(e.toString());
-        microservice.error(500, e.toString());
-      }
+          reject(e.toString());
+        }
+  
+      });
 
     },
     get(formData) {
@@ -93,7 +95,12 @@ Package("com.qcobjects.backend.microservice.contactform", [
     post(formData) {
       logger.info("[ContactFormMicroservice] executing post to send email notification...");
       let microservice = this;
-      microservice.registerClient(formData);
+      microservice.registerClient(formData).then((body) => {
+        microservice.body = body;
+        microservice.done();
+      }).catch(e => {
+        microservice.error(500, e.toString());
+      });
     }
   }),
   Class("Microservice", ContactFormMicroservice)

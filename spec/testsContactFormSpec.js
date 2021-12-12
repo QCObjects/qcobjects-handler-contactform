@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+/* eslint-disable no-undef */
+
+describe("QCObjects Main Test", function () {
+  require("qcobjects");
+  logger.debugEnabled = true;
+  // eslint-disable-next-line no-unused-vars
+  var originalTimeout;
+
+  beforeEach(function() {
+      originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
+  });
+
+
+  it("Contact Form Microservice Spec", function (done) {
+    const path = require("path");
+    const absolutePath = path.resolve(__dirname, "./");
+
+    // set up the test
+    // you can use the config.json file instead of the following
+    CONFIG.set(  "mailchimp_api", [
+      "$MAILCHIMP_API(MAILCHIMP_API_KEY,MAILCHIMP_API_SERVER,MAILCHIMP_API_LIST)"
+    ]);
+    CONFIG.set("gmail_user", "$ENV(GMAIL_USER)");
+    CONFIG.set("gmail_password", "$ENV(GMAIL_PASSWORD)");
+    CONFIG.set("gmail_from", "$ENV(GMAIL_FROM)");
+    CONFIG.set("gmail_to", "$ENV(GMAIL_TO)");
+    CONFIG.set("gmail_subject", "$ENV(GMAIL_SUBJECT)");
+    CONFIG.set("sendemail_subject_user", "$ENV(SENDEMAIL_SUBJECT_USER)");
+    CONFIG.set("sendemail_subject_backoffice", "$ENV(SENDEMAIL_SUBJECT_BACKOFFICE)");
+    CONFIG.set("sendemail_user_template_file", "$ENV(SENDEMAIL_USER_TEMPLATE_FILE)");
+    CONFIG.set("sendemail_backoffice_template_file", "$ENV(SENDEMAIL_BACKOFFICE_TEMPLATE_FILE)");
+
+    Import ("qcobjects-lib-mailchimp-api");
+    Import ("qcobjects-lib-sendemail");
+  
+    Import (`${absolutePath}/../api/com.qcobjects.backend.microservice.contactform.js`);
+    
+    // fake a microservice request
+    let microservice = New(Microservice, {
+      name: "Contact Form Microservice",
+      description: "Contact Form Microservice",
+      route: {cors:{}},
+      headers:{},
+      _new_ (){}
+    });
+
+    // run the test
+    microservice.registerClient(_DataStringify({
+      name: process.env.EMAIL_TEST_NAME,
+      email: process.env.EMAIL_TEST,
+    }))
+    .then ((body)=> { expect(body.status).toEqual("OK");done();})
+    .catch(error => {
+      console.error (`Completed with error ${JSON.stringify(error)}`);
+      done(new Error (`Completed with error ${JSON.stringify(error)}`));
+    });
+    
+    logger.debug("Contact Form Microservice Test Spec... OK");
+  });
+
+});
