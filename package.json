@@ -26,6 +26,9 @@
   "devDependencies": {
     "eslint": ">=8.0.0",
     "eslint-config-qcobjects": "^0.0.11",
+    "md5": "^2.3.0",
+    "qcobjects-lib-mailchimp-api": ">=0.0.20",
+    "qcobjects-lib-sendemail": ">=0.0.11",
     "qcobjects": "latest",
     "qcobjects-cli": "latest",
     "qcobjects-sdk": "latest"
