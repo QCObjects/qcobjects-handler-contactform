@@ -29,8 +29,8 @@ describe("QCObjects Main Test", function () {
     CONFIG.set("gmail_subject", "$ENV(GMAIL_SUBJECT)");
     CONFIG.set("sendemail_subject_user", "$ENV(SENDEMAIL_SUBJECT_USER)");
     CONFIG.set("sendemail_subject_backoffice", "$ENV(SENDEMAIL_SUBJECT_BACKOFFICE)");
-    CONFIG.set("sendemail_user_template_file", "$ENV(SENDEMAIL_USER_TEMPLATE_FILE)");
-    CONFIG.set("sendemail_backoffice_template_file", "$ENV(SENDEMAIL_BACKOFFICE_TEMPLATE_FILE)");
+    CONFIG.set("sendemail_user_template_file", "./email-template-example.tpl.html");
+    CONFIG.set("sendemail_backoffice_template_file", "./email-template-example.tpl.html");
 
     Import ("qcobjects-lib-mailchimp-api");
     Import ("qcobjects-lib-sendemail");
