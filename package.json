@@ -32,7 +32,7 @@
     "qcobjects": "latest",
     "qcobjects-cli": "latest",
     "qcobjects-lib-mailchimp-api": ">=0.0.20",
-    "qcobjects-lib-sendemail": ">=0.0.11",
+    "qcobjects-lib-sendemail": ">=0.0.13",
     "qcobjects-sdk": "latest"
   },
   "peerDependencies": {
@@ -40,7 +40,7 @@
     "qcobjects": ">=2.3.0",
     "qcobjects-cli": ">=2.3.47",
     "qcobjects-lib-mailchimp-api": ">=0.0.20",
-    "qcobjects-lib-sendemail": ">=0.0.11",
+    "qcobjects-lib-sendemail": ">=0.0.13",
     "qcobjects-sdk": ">=2.3.0"
   }
 }
