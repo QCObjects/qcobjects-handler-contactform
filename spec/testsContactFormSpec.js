@@ -22,9 +22,19 @@ describe("QCObjects Main Test", function () {
     CONFIG.set(  "mailchimp_api", [
       "$MAILCHIMP_API(MAILCHIMP_API_KEY,MAILCHIMP_API_SERVER,MAILCHIMP_API_LIST)"
     ]);
+    /*
     CONFIG.set("sendemail_transport", "gmail_2lo");
-    CONFIG.set("gmail_service_client", "$ENV(GMAIL_SERVICE_CLIENT");
+    CONFIG.set("gmail_service_client", "$ENV(GMAIL_SERVICE_CLIENT)");
     CONFIG.set("gmail_service_account_private_key", "$ENV(GMAIL_SERVICE_ACCOUNT_PRIVATE_KEY)");
+    CONFIG.set("gmail_access_token", "$ENV(GMAIL_ACCESS_TOKEN)");
+    CONFIG.set("gmail_access_token_expires", "$ENV(GMAIL_ACCESS_TOKEN_EXPIRES)");
+    CONFIG.set("gmail_refresh_token", "$ENV(GMAIL_REFRESH_TOKEN)");
+    */
+
+    CONFIG.set("sendemail_transport", "gmail_3lo");
+    CONFIG.set("gmail_client_id", "$ENV(GMAIL_CLIENT_ID)");
+    CONFIG.set("gmail_client_secret", "$ENV(GMAIL_CLIENT_SECRET)");
+    CONFIG.set("gmail_refresh_token", "$ENV(GMAIL_REFRESH_TOKEN)");
     CONFIG.set("gmail_access_token", "$ENV(GMAIL_ACCESS_TOKEN)");
     CONFIG.set("gmail_access_token_expires", "$ENV(GMAIL_ACCESS_TOKEN_EXPIRES)");
 
