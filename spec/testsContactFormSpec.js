@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-undef */
 
-if (process.env.ENABLE_EMAIL_TEST !== "false") {
+if (`${process.env.ENABLE_EMAIL_TEST}` !== "0") {
   describe("QCObjects Main Test", function () {
     require("qcobjects");
     logger.debugEnabled = true;
