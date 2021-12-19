@@ -15,7 +15,7 @@
   
   
     it("Contact Form Microservice Spec", function (done) {
-      if (`${process.env.ENABLE_EMAIL_TEST}` !== "0") {
+      if (`${process.env.ENABLE_EMAIL_TEST}` === "1") {
 
         const path = require("path");
         const absolutePath = path.resolve(__dirname, "./");
