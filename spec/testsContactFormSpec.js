@@ -78,7 +78,7 @@
         
         logger.debug("Contact Form Microservice Test Spec... OK");
       } else {
-        expexct(true).toBe(true);
+        expect(true).toBe(true);
       }
     });
   
